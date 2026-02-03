@@ -1,0 +1,24 @@
+services:
+  authentication: #authentication service
+    container_name: authentication
+    build:
+      dockerfile: authentication/Dockerfile
+      context: .
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      - JWT_KEY=${JWT_KEY}
+
+  authorization-api: #authorization service
+    container_name: authorization
+    build:
+      dockerfile: authorization/Dockerfile
+      context: .
+    restart: always
+    environment:
+      - JWT_KEY=${JWT_KEY}
+    ports:
+      - "81:81"
+    depends_on:
+      - authentication
